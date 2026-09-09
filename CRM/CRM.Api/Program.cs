@@ -1,4 +1,6 @@
 
+using CRM.DataAccess;
+using CRM.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 
@@ -13,7 +15,7 @@ namespace CRM.Api
 
             builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
+           
 
 
 
