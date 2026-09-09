@@ -1,4 +1,6 @@
 
+using Microsoft.OpenApi;
+
 namespace CRM.Api
 {
     public class Program
@@ -12,13 +14,18 @@ namespace CRM.Api
             builder.Services.AddControllers();
          
             builder.Services.AddOpenApi();
+            builder.Services.AddSwaggerGen(setup =>
+            {
+                setup.SwaggerDoc("v1",new OpenApiInfo { Title = "CRM API",Version = "v1"});
+            });
 
             var app = builder.Build();
 
          
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI(setup => setup.SwaggerEndpoint("/swagger/v1/swagger.json", "CRM API V1"));
             }
 
             app.UseHttpsRedirection();
