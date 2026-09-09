@@ -1,5 +1,8 @@
 
 using Microsoft.OpenApi;
+using CRM.Api.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Api
 {
@@ -8,6 +11,11 @@ namespace CRM.Api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("AppDbContext") ?? throw new InvalidOperationException("Connection string 'AppDbContext' not found.");
+
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
 
             
 
