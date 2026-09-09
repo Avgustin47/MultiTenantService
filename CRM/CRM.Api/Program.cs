@@ -1,8 +1,6 @@
 
-using Microsoft.OpenApi;
-using CRM.Api.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 
 namespace CRM.Api
 {
@@ -17,19 +15,19 @@ namespace CRM.Api
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
 
-            
+
 
             builder.Services.AddControllers();
-         
+
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen(setup =>
             {
-                setup.SwaggerDoc("v1",new OpenApiInfo { Title = "CRM API",Version = "v1"});
+                setup.SwaggerDoc("v1", new OpenApiInfo { Title = "CRM API", Version = "v1" });
             });
 
             var app = builder.Build();
 
-         
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

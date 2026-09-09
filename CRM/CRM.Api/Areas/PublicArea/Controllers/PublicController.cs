@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace CRM.Api.Areas.PublicArea.Controllers
 {
@@ -15,6 +14,6 @@ namespace CRM.Api.Areas.PublicArea.Controllers
         {
             return Ok("Приветик через хптп интернетик");
         }
-        
+
     }
 }

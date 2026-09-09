@@ -14,11 +14,11 @@ namespace CRM.WebBlazor
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseAdress!) });
             var app = builder.Build();
 
-            
+
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Error");
-              
+
                 app.UseHsts();
             }
 
