@@ -1,4 +1,8 @@
 <Solution>
   <Project Path="CRM.Api/CRM.Api.csproj" />
+  <Project Path="CRM.Model/CRM.Model.csproj" Id="573f4f71-db7d-4d27-908e-a14045438d9a" />
+  <Project Path="CRM.Service/CRM.Service.csproj" Id="04909ea3-e856-41d4-b072-3aad787f6d61" />
+  <Project Path="CRM.Utility/CRM.Utility.csproj" Id="6f22fe41-df28-4107-9ed6-faf59f86e2cf" />
   <Project Path="CRM.WebBlazor/CRM.WebBlazor.csproj" />
+  <Project Path="DataAccess/CRM.DataAccess.csproj" Id="a6a74ee0-85f0-4995-9c2d-61e9740baa48" />
 </Solution>
