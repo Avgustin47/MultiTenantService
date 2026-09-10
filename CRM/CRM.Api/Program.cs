@@ -1,6 +1,7 @@
 
 using CRM.DataAccess;
-using CRM.Model;
+using CRM.Service;
+using CRM.Service.IService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using System.Diagnostics;
@@ -16,7 +17,7 @@ namespace CRM.Api
 
             builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
-           
+
 
 
 
@@ -27,7 +28,7 @@ namespace CRM.Api
             {
                 setup.SwaggerDoc("v1", new OpenApiInfo { Title = "CRM API", Version = "v1" });
             });
-
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             var app = builder.Build();
 
 
@@ -39,7 +40,7 @@ namespace CRM.Api
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = url,
-                    UseShellExecute= true
+                    UseShellExecute = true
                 });
             }
 

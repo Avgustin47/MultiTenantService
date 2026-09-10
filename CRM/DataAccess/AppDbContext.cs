@@ -1,5 +1,4 @@
-
-using CRM.Model;
+using CRM.Model.IdentityModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace CRM.DataAccess;
