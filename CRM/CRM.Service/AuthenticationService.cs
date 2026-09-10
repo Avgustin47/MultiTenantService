@@ -5,34 +5,47 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CRM.Service
 {
-    public class AuthenticationService(UserManager<ApplicationUser> userManager) : IAuthenticationService
+    public class AuthenticationService(
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager
+        
+        ) : IAuthenticationService
     {
-        public Task<bool> ChangePasswordAsync(ApplicationUserInputModel model)
+        public Task<bool> ChangePasswordAsync(ApplicationUserRegisterInputModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> ForgotPasswordAsync(ApplicationUserInputModel model)
+        public Task<bool> ForgotPasswordAsync(ApplicationUserLoginInputModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> LoginAsync(ApplicationUserInputModel model)
+        public async Task<bool> LoginAsync(ApplicationUserLoginInputModel model)
+        {
+            var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
+            if (!result.Succeeded)
+            {
+                
+                throw new Exception($"Unable to login. Errors:" + result.ToString() );
+            }
+
+            return true;
+        }
+
+        public Task<bool> RefreshTokenAsync(ApplicationUserRegisterInputModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RefreshTokenAsync(ApplicationUserInputModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> RegisterAsync(ApplicationUserInputModel model)
+        public async Task<bool> RegisterAsync(ApplicationUserRegisterInputModel model)
         {
             ArgumentNullException.ThrowIfNull(model.Email);
             ArgumentNullException.ThrowIfNull(model.Password);
+
             var user = new ApplicationUser
             {
+                UserName = model.FirstName + model.LastName,      
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -43,10 +56,16 @@ namespace CRM.Service
 
             var result = await userManager.CreateAsync(user, model.Password);
 
-            return result.Succeeded ? true : throw new Exception("Unable to create user,Errors:" + result.Errors);
+            if (!result.Succeeded)
+            {
+                var errors = string.Join("; ", result.Errors.Select(e => $"{e.Code}: {e.Description}"));
+                throw new Exception($"Unable to create user. Errors: {errors}");
+            }
+
+            return true;
         }
 
-        public Task<bool> ResetPasswordAsync(ApplicationUserInputModel model)
+        public Task<bool> ResetPasswordAsync(ApplicationUserRegisterInputModel model)
         {
             throw new NotImplementedException();
         }

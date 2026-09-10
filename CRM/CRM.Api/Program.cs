@@ -1,7 +1,9 @@
 
 using CRM.DataAccess;
+using CRM.Model.IdentityModels;
 using CRM.Service;
 using CRM.Service.IService;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using System.Diagnostics;
@@ -17,10 +19,6 @@ namespace CRM.Api
 
             builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
-
-
-
-
             builder.Services.AddControllers();
 
             builder.Services.AddOpenApi();
@@ -29,6 +27,10 @@ namespace CRM.Api
                 setup.SwaggerDoc("v1", new OpenApiInfo { Title = "CRM API", Version = "v1" });
             });
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
             var app = builder.Build();
 
 

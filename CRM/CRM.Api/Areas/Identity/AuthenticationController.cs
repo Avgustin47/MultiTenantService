@@ -18,33 +18,37 @@ namespace CRM.Api.Areas.Identity
         {
             _authenticationService = authenticationService;
         }
+
         [HttpPost("login")]
         [DisplayName("Login")]
-        public async Task<IActionResult> Login([FromBody] ApplicationUserInputModel model)
+        public async Task<IActionResult> Login([FromBody] ApplicationUserLoginInputModel model)
         {
             var response = await _authenticationService.LoginAsync(model);
-            return Ok(response);
+              return response ? Ok(response) : StatusCode(500);
         }
+
         [HttpPost("register")]
         [DisplayName("Register")]
-        public async Task<IActionResult> Register([FromBody] ApplicationUserInputModel model)
+        public async Task<IActionResult> Register([FromBody] ApplicationUserRegisterInputModel model)
         {
             var response = await _authenticationService.RegisterAsync(model);
-            return Ok(response);
+            return response ? Ok(response) : StatusCode(500);
         }
+
         [HttpPost("forgot-password")]
         [DisplayName("forgot Password")]
-        public async Task<IActionResult> ForgotPassword([FromBody] ApplicationUserInputModel model)
+        public async Task<IActionResult> ForgotPassword([FromBody] ApplicationUserLoginInputModel model)
         {
             var response = await _authenticationService.ForgotPasswordAsync(model);
-            return Ok(response);
+              return response ? Ok(response) : StatusCode(500);
         }
+
         [HttpPost("reset-password")]
         [DisplayName("Reset Password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ApplicationUserInputModel model)
+        public async Task<IActionResult> ResetPassword([FromBody] ApplicationUserRegisterInputModel model)
         {
             var response = await _authenticationService.ResetPasswordAsync(model);
-            return Ok(response);
+              return response ? Ok(response) : StatusCode(500);
         }
     }
 }
