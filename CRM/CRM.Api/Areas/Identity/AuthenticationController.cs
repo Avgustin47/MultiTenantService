@@ -24,7 +24,7 @@ namespace CRM.Api.Areas.Identity
         public async Task<IActionResult> Login([FromBody] ApplicationUserLoginInputModel model)
         {
             var response = await _authenticationService.LoginAsync(model);
-              return response ? Ok(response) : StatusCode(500);
+            return response.IsSucces ? Ok(response) : BadRequest(response);
         }
 
         [HttpPost("register")]
@@ -40,7 +40,7 @@ namespace CRM.Api.Areas.Identity
         public async Task<IActionResult> ForgotPassword([FromBody] ApplicationUserLoginInputModel model)
         {
             var response = await _authenticationService.ForgotPasswordAsync(model);
-              return response ? Ok(response) : StatusCode(500);
+            return response ? Ok(response) : StatusCode(500);
         }
 
         [HttpPost("reset-password")]
@@ -48,7 +48,7 @@ namespace CRM.Api.Areas.Identity
         public async Task<IActionResult> ResetPassword([FromBody] ApplicationUserRegisterInputModel model)
         {
             var response = await _authenticationService.ResetPasswordAsync(model);
-              return response ? Ok(response) : StatusCode(500);
+            return response ? Ok(response) : StatusCode(500);
         }
     }
 }

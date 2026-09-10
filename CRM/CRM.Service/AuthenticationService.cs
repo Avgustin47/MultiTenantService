@@ -1,4 +1,5 @@
-﻿using CRM.Model.IdentityModels;
+﻿using CRM.Model.ApplicationModels;
+using CRM.Model.IdentityModels;
 using CRM.Model.InputModels;
 using CRM.Service.IService;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +9,7 @@ namespace CRM.Service
     public class AuthenticationService(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager
-        
+
         ) : IAuthenticationService
     {
         public Task<bool> ChangePasswordAsync(ApplicationUserRegisterInputModel model)
@@ -21,16 +22,29 @@ namespace CRM.Service
             throw new NotImplementedException();
         }
 
-        public async Task<bool> LoginAsync(ApplicationUserLoginInputModel model)
+        public async Task<ResponseModel<bool>> LoginAsync(ApplicationUserLoginInputModel model)
         {
             var result = await signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
-            if (!result.Succeeded)
+            if (result.Succeeded)
             {
-                
-                throw new Exception($"Unable to login. Errors:" + result.ToString() );
-            }
+                return new ResponseModel<bool>
+                {
+                    IsSucces = true,
+                    Message = "Login succesful",
+                    Data = true
+                };
 
-            return true;
+            }
+            string errorMessage = result.IsLockedOut ? "User is locked out" :
+                                  result.IsNotAllowed ? "Login is not allowed" :
+                                  result.RequiresTwoFactor ? "Two-factor authentification is required" :
+                                  "Invalid login attempt";
+            return new ResponseModel<bool>
+            {
+                IsSucces = false,
+                Message = errorMessage,
+                Data = false
+            };
         }
 
         public Task<bool> RefreshTokenAsync(ApplicationUserRegisterInputModel model)
@@ -45,7 +59,7 @@ namespace CRM.Service
 
             var user = new ApplicationUser
             {
-                UserName = model.FirstName + model.LastName,      
+                UserName = model.FirstName + model.LastName,
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,

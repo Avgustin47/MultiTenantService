@@ -5,7 +5,7 @@ namespace CRM.Model.InputModels
     public class ApplicationUserLoginInputModel
     {
         [Required]
-        
+
         public required string Username { get; set; }
 
         [Required]
